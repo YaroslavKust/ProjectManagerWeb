@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using ProjectManager.API.ActionFilters;
 using ProjectManager.API.Extensions;
 using ProjectManager.API.Services.Authentication;
 using ProjectManager.DAL.UnitOfWorks;
@@ -29,6 +30,9 @@ namespace ProjectManager.API
             services.ConfigureAuthentication(Configuration);
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddScoped<ValidateProjectExistsAttribute>();
+            services.AddScoped<ValidateTaskExistsAttribute>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -42,6 +46,8 @@ namespace ProjectManager.API
 
             app.UseSwagger();
             app.UseSwaggerUI(options => options.SwaggerEndpoint("v1/swagger.json", "ProjectManager API v1"));
+
+            app.ConfigureExceptionsHandler();
 
             app.UseRouting();
 

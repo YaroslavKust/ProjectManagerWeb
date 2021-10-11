@@ -9,6 +9,13 @@ namespace ProjectManager.API
         public MappingProfile()
         {
             CreateMap<UserForAuth, User>();
+
+            CreateMap<Project, ProjectDto>();
+            CreateMap<ProjectForManipulation, Project>();
+
+            CreateMap<MyTask, TaskDto>();
+            CreateMap<TaskForCreate, MyTask>();
+            CreateMap<TaskForUpdate, MyTask>();
         }
     }
 }
