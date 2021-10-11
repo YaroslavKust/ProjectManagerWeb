@@ -1,99 +1,75 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProjectManager.API.ActionFilters;
 using ProjectManager.DAL.UnitOfWorks;
+using ProjectManager.Entities.DTO;
 using ProjectManager.Entities.Models;
 
 namespace ProjectManager.API.Controllers
 {
     [Route("api/projects/{projectId}/tasks")]
     [ApiController]
+    [Authorize]
+    [ServiceFilter(typeof(ValidateProjectExistsAttribute))]
     public class TaskController : ControllerBase
     {
         private IUnitOfWork _unit;
+        private IMapper _mapper;
 
-        public TaskController(IUnitOfWork unit)
+        public TaskController(IUnitOfWork unit, IMapper mapper)
         {
             _unit = unit;
+            _mapper = mapper;
         }
 
 
         [HttpGet]
         public async Task<IActionResult> GetTasks(int projectId)
         {
-            var project = await _unit.Projects.GetProjectAsync(projectId);
+            var tasks = await _unit.Tasks.GetTasksAsync(projectId);
+            var results = _mapper.Map<IEnumerable<TaskDto>>(tasks);
 
-            if (project is null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                var tasks = await _unit.Tasks.GetTasksAsync(projectId);
-                return Ok(tasks);
-            }
+            return Ok(results);
         }
 
 
         [HttpGet("{id}", Name = "TaskById")]
-        public async Task<IActionResult> GetTask(int projectId, int id)
+        [ServiceFilter(typeof(ValidateTaskExistsAttribute))]
+        public IActionResult GetTask()
         {
-            var project = await _unit.Projects.GetProjectAsync(projectId);
+            var task = HttpContext.Items["SelectedTask"] as MyTask;
 
-            if (project is null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                var task = await _unit.Tasks.GetTaskAsync(projectId, id);
-
-                if (task is null)
-                    return NotFound();
-
-                return Ok(task);
-            }
+            var result = _mapper.Map<TaskDto>(task);
+                
+            return Ok(result);
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateTask(int projectId, [FromBody] MyTask task)
+        public async Task<IActionResult> CreateTask(int projectId, [FromBody] TaskForCreate task)
         {
-            var project = await _unit.Projects.GetProjectAsync(projectId);
+            var result = _mapper.Map<MyTask>(task);
+            result.ProjectId = projectId;
 
-            if (project is null)
-            {
-                return NotFound();
-            }
-
-            task.ProjectId = projectId;
-
-            _unit.Tasks.Add(task);
+            _unit.Tasks.Add(result);
             await _unit.SaveAsync();
 
-            return CreatedAtRoute("TaskById", new { projectId, id = task.Id }, task);
+            return CreatedAtRoute("TaskById", new { projectId, id = result.Id }, result);
         }
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTask(int projectId, int id, [FromBody] MyTask task)
+        [ServiceFilter(typeof(ValidateTaskExistsAttribute))]
+        public async Task<IActionResult> UpdateTask([FromBody] TaskForUpdate task)
         {
-            var project = await _unit.Projects.GetProjectAsync(projectId);
+            var oldTask = HttpContext.Items["SelectedTask"] as MyTask;
 
-            if (project is null)
-            {
-                return NotFound();
-            }
-
-            var oldTask = await _unit.Tasks.GetTaskAsync(projectId, id);
-
-            if (oldTask is null)
-                return NotFound();
-
-            oldTask.Description = task.Description;
-            oldTask.ProgressInPercents = task.ProgressInPercents;
+            _mapper.Map(task, oldTask);
 
             _unit.Tasks.Update(oldTask);
-
             await _unit.SaveAsync();
 
             return NoContent();
@@ -101,22 +77,12 @@ namespace ProjectManager.API.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTask(int projectId, int id)
+        [ServiceFilter(typeof(ValidateTaskExistsAttribute))]
+        public async Task<IActionResult> DeleteTask()
         {
-            var project = await _unit.Projects.GetProjectAsync(projectId);
-
-            if (project is null)
-            {
-                return NotFound();
-            }
-
-            var task = await _unit.Tasks.GetTaskAsync(projectId, id);
-
-            if (task is null)
-                return NotFound();
+            var task = HttpContext.Items["SelectedTask"] as MyTask;
 
             _unit.Tasks.Delete(task);
-
             await _unit.SaveAsync();
 
             return NoContent();

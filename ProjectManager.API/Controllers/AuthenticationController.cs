@@ -13,7 +13,7 @@ namespace ProjectManager.API.Controllers
     {
         private IAuthenticationManager _authManager;
 
-        public AuthenticationController(IAuthenticationManager authManager, IMapper mapper)
+        public AuthenticationController(IAuthenticationManager authManager)
         {
             _authManager = authManager;
         }

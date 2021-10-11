@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ProjectManager.DAL.UnitOfWorks;
-using System.Threading.Tasks;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using ProjectManager.DAL.Models;
+using Microsoft.AspNetCore.Mvc;
+using ProjectManager.DAL.UnitOfWorks;
 using ProjectManager.Entities.Models;
+using System.Threading.Tasks;
+using AutoMapper;
+using ProjectManager.Entities.DTO;
 
 namespace ProjectManager.API.Controllers
 {
@@ -13,46 +18,60 @@ namespace ProjectManager.API.Controllers
     public class ProjectController : ControllerBase
     {
         private IUnitOfWork _unit;
+        private IMapper _mapper;
 
-        public ProjectController(IUnitOfWork unit)
+        public ProjectController(IUnitOfWork unit, IMapper mapper)
         {
             _unit = unit;
+            _mapper = mapper;
         }
+
 
         [HttpGet]
         public async Task<IActionResult> GetProjects()
         {
-            var projects = await _unit.Projects.GetProjectsAsync(null);
-            return Ok(projects);
+            var userId = GetUserId();
+
+            var projects = await _unit.Projects.GetProjectsAsync(p => p.UserId == userId);
+            var results = _mapper.Map<IEnumerable<ProjectDto>>(projects);
+
+            return Ok(results);
         }
 
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProjectById(int id)
         {
-            var project = await _unit.Projects.GetProjectAsync(id);
-            return Ok(project);
+            var userId = GetUserId();
+
+            var project = await _unit.Projects.GetProjectAsync(userId, id);
+            var result = _mapper.Map<ProjectDto>(project);
+
+            return Ok(result);
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateProject([FromBody] Project project)
+        public async Task<IActionResult> CreateProject([FromBody] ProjectForManipulation project)
         {
-            _unit.Projects.Add(project);
+            var result = _mapper.Map<Project>(project);
+            result.UserId = GetUserId();
+            _unit.Projects.Add(result);
             await _unit.SaveAsync();
             return Ok();
         }
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProject(int id,[FromBody] Project project)
+        public async Task<IActionResult> UpdateProject(int id,[FromBody] ProjectForManipulation project)
         {
-            var updateProject = await _unit.Projects.GetProjectAsync(project.Id);
+            var userId = GetUserId();
+            var updateProject = await _unit.Projects.GetProjectAsync(userId, id);
 
             if (updateProject is null)
                 return NotFound();
 
-            updateProject.Name = project.Name;
+            _mapper.Map(project, updateProject);
 
             _unit.Projects.Update(updateProject);
             await _unit.SaveAsync();
@@ -64,7 +83,8 @@ namespace ProjectManager.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProject(int id)
         {
-            var delProject = await _unit.Projects.GetProjectAsync(id);
+            var userId = GetUserId();
+            var delProject = await _unit.Projects.GetProjectAsync(userId, id);
 
             if (delProject is null)
                 return NotFound();
@@ -73,6 +93,12 @@ namespace ProjectManager.API.Controllers
             await _unit.SaveAsync();
 
             return NoContent();
+        }
+
+
+        private int GetUserId()
+        {
+            return Int32.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
         }
     }
 }

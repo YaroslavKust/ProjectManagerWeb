@@ -81,7 +81,7 @@ namespace ProjectManager.API.Services.Authentication
 
         private List<Claim> GetClaims()
         {
-             var claims = new List<Claim> { new Claim(ClaimTypes.Name, _user.Name) };
+             var claims = new List<Claim> { new Claim(ClaimTypes.NameIdentifier, _user.Id.ToString()) };
              return claims;
         }
     }
