@@ -9,6 +9,6 @@ namespace ProjectManager.DAL.Repositories
     public interface IProjectRepository: IRepository<Project>
     {
         Task<IEnumerable<Project>> GetProjectsAsync(Expression<Func<Project, bool>> exp);
-        Task<Project> GetProjectAsync(int id);
+        Task<Project> GetProjectAsync(int userId, int id);
     }
 }

@@ -15,9 +15,9 @@ namespace ProjectManager.DAL.Repositories
             return await Get(exp).ToListAsync();
         }
 
-        public async Task<Project> GetProjectAsync(int id)
+        public async Task<Project> GetProjectAsync(int userId, int id)
         {
-            return await Get(p => p.Id == id).FirstOrDefaultAsync();
+            return await Get(p => p.UserId == userId && p.Id == id).FirstOrDefaultAsync();
         }
     }
 }
