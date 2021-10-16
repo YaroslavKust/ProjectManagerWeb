@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace ProjectManager.DAL.Repositories
 {
@@ -11,8 +9,6 @@ namespace ProjectManager.DAL.Repositories
     {
         private DbSet<T> _dataSet;
         private DbContext _context;
-
-        protected DbSet<T> DataSet => _dataSet;
 
         public Repository(DbContext context)
         {
