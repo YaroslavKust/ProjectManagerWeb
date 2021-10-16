@@ -33,7 +33,7 @@
                              FontSize="15"
                              Grid.Column="0"/>
 
-                    <Grid Grid.Column="1" Background="Blue">
+                    <Grid Grid.Column="1" Background="DodgerBlue">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
@@ -44,6 +44,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="{Binding CurrentProject.Name}"
+                               Margin="10 0 0 0"
                                Grid.Column="0" Grid.Row="0" 
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"

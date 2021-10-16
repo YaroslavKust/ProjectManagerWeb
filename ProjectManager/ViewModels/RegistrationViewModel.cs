@@ -1,9 +1,9 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using System.Windows.Input;
 using Ninject;
-using ProjectManager.BL;
-using ProjectManager.BL.Interfaces;
 using ProjectManager.UI.Common;
+using ProjectManager.UI.Services;
 using ProjectManager.UI.Views;
 using ProjectManager.UI.Views.Pages;
 
@@ -56,7 +56,7 @@ namespace ProjectManager.UI.ViewModels
                         await _authService.RegisterAsync(RegName, RegPassword);
                         Mouse.OverrideCursor = Cursors.Arrow;
                     }
-                    catch(TakenNameException)
+                    catch(IOException)
                     {
                         Mouse.OverrideCursor = Cursors.Arrow;
                         _messenger.SendMessage(Properties.Resources.NameAlreadyUsed);

@@ -2,8 +2,9 @@
 using System.Threading.Tasks;
 using System.Windows;
 using Ninject;
-using ProjectManager.BL.Interfaces;
 using ProjectManager.UI.Common;
+using ProjectManager.UI.Models;
+using ProjectManager.UI.Services;
 using ProjectManager.UI.Views;
 using ProjectManager.UI.Views.Pages;
 
@@ -45,16 +46,10 @@ namespace ProjectManager.UI.ViewModels
 
         private async void Auth()
         {
-            var user  = await _authService.AuthorizeAsync(AuthName, AuthPassword);
-
-            if (user == null)
-            {
-                _messenger.SendMessage(Properties.Resources.InvalidLoginOrPassword);
-                return;
-            }
+            await _authService.AuthorizeAsync(AuthName, AuthPassword);
 
             var win = (MainWindow)Application.Current.MainWindow;
-            win.Frame.Navigate(new MainPage(user));
+            win.Frame.Navigate(new MainPage(new User()));
         }
     }
 }

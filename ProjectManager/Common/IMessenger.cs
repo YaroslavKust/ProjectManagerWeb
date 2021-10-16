@@ -9,6 +9,6 @@ namespace ProjectManager.UI
     interface IMessenger
     {
         void SendMessage(string text);
-        bool SendConfirmMessage(string text);
+        Task<bool> SendConfirmMessageAsync(string text);
     }
 }

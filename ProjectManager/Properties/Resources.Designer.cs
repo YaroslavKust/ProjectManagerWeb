@@ -19,7 +19,7 @@ namespace ProjectManager.UI.Properties {
     // с помощью такого средства, как ResGen или Visual Studio.
     // Чтобы добавить или удалить член, измените файл .ResX и снова запустите ResGen
     // с параметром /str или перестройте свой проект VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -61,6 +61,15 @@ namespace ProjectManager.UI.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Cansel.
+        /// </summary>
+        public static string Cansel {
+            get {
+                return ResourceManager.GetString("Cansel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Choose record.
         /// </summary>
         public static string ChooseRecord {
@@ -93,6 +102,24 @@ namespace ProjectManager.UI.Properties {
         public static string DifferentPasswords {
             get {
                 return ResourceManager.GetString("DifferentPasswords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Project name cannot be empty.
+        /// </summary>
+        public static string EmptyProjectName {
+            get {
+                return ResourceManager.GetString("EmptyProjectName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Description is empty!.
+        /// </summary>
+        public static string EmptyTaskDescription {
+            get {
+                return ResourceManager.GetString("EmptyTaskDescription", resourceCulture);
             }
         }
         
@@ -151,6 +178,15 @@ namespace ProjectManager.UI.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Ok.
+        /// </summary>
+        public static string Ok {
+            get {
+                return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Password.
         /// </summary>
         public static string Password {
@@ -201,6 +237,15 @@ namespace ProjectManager.UI.Properties {
         public static string Registration {
             get {
                 return ResourceManager.GetString("Registration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Required field.
+        /// </summary>
+        public static string RequiredField {
+            get {
+                return ResourceManager.GetString("RequiredField", resourceCulture);
             }
         }
         

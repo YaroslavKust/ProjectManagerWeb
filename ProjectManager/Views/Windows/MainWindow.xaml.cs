@@ -1,4 +1,5 @@
-﻿using ProjectManager.UI.Views.Pages;
+﻿using MahApps.Metro.Controls;
+using ProjectManager.UI.Views.Pages;
 using System;
 using System.Globalization;
 using System.Threading;
@@ -9,7 +10,7 @@ namespace ProjectManager.UI.Views
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         public MainWindow()
         {

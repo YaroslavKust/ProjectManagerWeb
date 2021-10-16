@@ -1,7 +1,10 @@
 ﻿using Ninject.Modules;
-using ProjectManager.BL.Interfaces;
-using ProjectManager.BL.Services;
-using ProjectManager.UI.ViewModels;
+using ProjectManager.UI.Common;
+using ProjectManager.UI.Services;
+using ITaskService = ProjectManager.UI.Services.ITaskService;
+using ProjectService = ProjectManager.UI.Services.ProjectService;
+using TaskService = ProjectManager.UI.Services.TaskService;
+
 
 namespace ProjectManager.UI.Util
 {
@@ -13,6 +16,7 @@ namespace ProjectManager.UI.Util
             Bind<ITaskService>().To<TaskService>();
             Bind<IAuthenticationService>().To<AuthenticationService>();
             Bind<IMessenger>().To<DefaultMessenger>();
+            Bind<IConnector>().To<JsonConnector>();
         }
     }
 }

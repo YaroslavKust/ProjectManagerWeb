@@ -1,15 +1,12 @@
-﻿using ProjectManager.BL.DTO;
-using ProjectManager.UI.ViewModels;
+﻿using ProjectManager.UI.ViewModels;
 using System.Windows.Controls;
+using ProjectManager.UI.Models;
 
 namespace ProjectManager.UI.Views.Pages
 {
-    /// <summary>
-    /// Логика взаимодействия для MainPage.xaml
-    /// </summary>
     public partial class MainPage : Page
     {
-        public MainPage(UserDto user)
+        public MainPage(User user)
         {
             InitializeComponent();
             DataContext = new MainPageViewModel(user);

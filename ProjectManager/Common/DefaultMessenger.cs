@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -9,15 +7,23 @@ namespace ProjectManager.UI
 {
     class DefaultMessenger: IMessenger
     {
-        public void SendMessage(string text)
+        public async void SendMessage(string text)
         {
-            MessageBox.Show(text);
+            var window = Application.Current.MainWindow as MetroWindow;
+            await window.ShowMessageAsync("", text);
         }
 
-        public bool SendConfirmMessage(string text)
+        public async Task<bool> SendConfirmMessageAsync(string text)
         {
-            var res = MessageBox.Show(text, "Confirmation", MessageBoxButton.YesNo);
-            return res == MessageBoxResult.Yes;
+            var settings = new MetroDialogSettings()
+            {
+                AffirmativeButtonText = Properties.Resources.Ok,
+                NegativeButtonText = Properties.Resources.Cansel
+            };
+
+            var window = Application.Current.MainWindow as MetroWindow;
+            var res = await window.ShowMessageAsync("", text,MessageDialogStyle.AffirmativeAndNegative, settings);
+            return res == MessageDialogResult.Affirmative;
         }
     }
 }

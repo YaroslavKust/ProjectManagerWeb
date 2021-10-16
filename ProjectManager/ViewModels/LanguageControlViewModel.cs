@@ -23,17 +23,21 @@ namespace ProjectManager.UI.ViewModels
             get => _selectedLang;
             set
             {
-                if (value.Name == _selectedLang.Name) return;
+                SetLang(value);
+            }
+        }
 
-                _selectedLang = value;
-                LanguageManager.Language = value;
+        private async void SetLang(CultureInfo info)
+        {
+            if (info.Name == _selectedLang.Name) return;
 
-                if (_messenger.SendConfirmMessage(Properties.Resources.RestartAppConfirm))
-                {
-                    Process.Start(Process.GetCurrentProcess().MainModule.FileName);
-                    Application.Current.Shutdown();
-                }
+            _selectedLang = info;
+            LanguageManager.Language = info;
 
+            if (await _messenger.SendConfirmMessageAsync(Properties.Resources.RestartAppConfirm))
+            {
+                Process.Start(Process.GetCurrentProcess().MainModule.FileName);
+                Application.Current.Shutdown();
             }
         }
     }
