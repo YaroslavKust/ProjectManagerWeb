@@ -32,14 +32,14 @@ namespace ProjectManager.API.Controllers
         {
             var userId = GetUserId();
 
-            var projects = await _unit.Projects.GetProjectsAsync(p => p.UserId == userId);
+            var projects = await _unit.Projects.GetProjectsAsync(p=>p.UserId == userId);
             var results = _mapper.Map<IEnumerable<ProjectDto>>(projects);
 
             return Ok(results);
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "ProjectById")]
         public async Task<IActionResult> GetProjectById(int id)
         {
             var userId = GetUserId();
@@ -58,7 +58,7 @@ namespace ProjectManager.API.Controllers
             result.UserId = GetUserId();
             _unit.Projects.Add(result);
             await _unit.SaveAsync();
-            return Ok();
+            return CreatedAtRoute("ProjectById", new { id = result.Id }, _mapper.Map<ProjectDto>(result));
         }
 
 

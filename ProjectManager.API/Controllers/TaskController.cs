@@ -57,13 +57,13 @@ namespace ProjectManager.API.Controllers
             _unit.Tasks.Add(result);
             await _unit.SaveAsync();
 
-            return CreatedAtRoute("TaskById", new { projectId, id = result.Id }, result);
+            return CreatedAtRoute("TaskById", new { projectId, id = result.Id }, _mapper.Map<TaskDto>(result));
         }
 
 
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidateTaskExistsAttribute))]
-        public async Task<IActionResult> UpdateTask([FromBody] TaskForUpdate task)
+        public async Task<IActionResult> UpdateTask(int projectId, int id, [FromBody] TaskForUpdate task)
         {
             var oldTask = HttpContext.Items["SelectedTask"] as MyTask;
 
@@ -78,7 +78,7 @@ namespace ProjectManager.API.Controllers
 
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(ValidateTaskExistsAttribute))]
-        public async Task<IActionResult> DeleteTask()
+        public async Task<IActionResult> DeleteTask(int projectId, int id)
         {
             var task = HttpContext.Items["SelectedTask"] as MyTask;
 

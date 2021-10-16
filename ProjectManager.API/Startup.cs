@@ -42,7 +42,7 @@ namespace ProjectManager.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseSwagger();
             app.UseSwaggerUI(options => options.SwaggerEndpoint("v1/swagger.json", "ProjectManager API v1"));
