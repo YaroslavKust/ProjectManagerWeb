@@ -50,7 +50,7 @@ namespace ProjectManager.UI.ViewModels
                 await _authService.AuthorizeAsync(AuthName, AuthPassword);
 
                 var win = (MainWindow)Application.Current.MainWindow;
-                win.Frame.Navigate(new MainPage(new User()));
+                win.Frame.Navigate(new MainPage());
             }
             catch (UnauthorizedAccessException)
             {

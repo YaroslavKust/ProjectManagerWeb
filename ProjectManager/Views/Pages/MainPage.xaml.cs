@@ -6,10 +6,10 @@ namespace ProjectManager.UI.Views.Pages
 {
     public partial class MainPage : Page
     {
-        public MainPage(User user)
+        public MainPage()
         {
             InitializeComponent();
-            DataContext = new MainPageViewModel(user);
+            DataContext = new MainPageViewModel();
         }
     }
 }

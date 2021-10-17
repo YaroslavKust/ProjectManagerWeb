@@ -11,7 +11,6 @@ namespace ProjectManager.UI.ViewModels
 {
     public class MainPageViewModel: BaseViewModel
     {
-        private User _user;
         private MainWindow _window;
 
         private IProjectService _projectService;
@@ -23,12 +22,11 @@ namespace ProjectManager.UI.ViewModels
         private Project _currentProject, _selectedProject;
         private MyTask _selectedTask;
 
-        public MainPageViewModel(User user)
+        public MainPageViewModel()
         {
             _projectService = App.Container.Get<IProjectService>();
             _taskService = App.Container.Get<ITaskService>();
             _messenger = App.Container.Get<IMessenger>();
-            _user = user;
             _window = Application.Current.MainWindow as MainWindow;
             InitProj();
         }

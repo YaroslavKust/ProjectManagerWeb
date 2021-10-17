@@ -41,11 +41,11 @@ namespace ProjectManager.UI.ViewModels
                     if (res)
                     {
                         var window = Application.Current.MainWindow as MainWindow;
-                        window?.Frame.Navigate(new MainPage(App.User));
+                        window?.Frame.Navigate(new MainPage());
                     }
                     else
                     {
-                        _messenger.SendMessage("error");
+                        _messenger.SendMessage(Properties.Resources.Error);
                     }
                     
                 }));
