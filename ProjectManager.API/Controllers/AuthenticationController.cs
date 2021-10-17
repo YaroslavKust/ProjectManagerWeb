@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using AutoMapper;
+using ProjectManager.API.ActionFilters;
 using ProjectManager.API.Services.Authentication;
 using ProjectManager.Entities.DTO;
-using ProjectManager.Entities.Models;
 
 namespace ProjectManager.API.Controllers
 {
@@ -20,6 +19,7 @@ namespace ProjectManager.API.Controllers
 
 
         [HttpPost("login")]
+        [ValidateModel]
         public async Task<IActionResult> LoginAsync([FromBody] UserForAuth user)
         {
             if (await _authManager.ValidateUser(user))
@@ -30,7 +30,9 @@ namespace ProjectManager.API.Controllers
             return Unauthorized();
         }
 
+
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> RegisterAsync([FromBody] UserForAuth user)
         {
             if (await _authManager.CreateUser(user))

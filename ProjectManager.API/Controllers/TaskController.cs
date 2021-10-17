@@ -49,6 +49,7 @@ namespace ProjectManager.API.Controllers
 
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> CreateTask(int projectId, [FromBody] TaskForCreate task)
         {
             var result = _mapper.Map<MyTask>(task);
@@ -62,6 +63,7 @@ namespace ProjectManager.API.Controllers
 
 
         [HttpPut("{id}")]
+        [ValidateModel]
         [ServiceFilter(typeof(ValidateTaskExistsAttribute))]
         public async Task<IActionResult> UpdateTask(int projectId, int id, [FromBody] TaskForUpdate task)
         {

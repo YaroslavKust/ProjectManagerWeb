@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
@@ -8,6 +7,7 @@ using ProjectManager.DAL.UnitOfWorks;
 using ProjectManager.Entities.Models;
 using System.Threading.Tasks;
 using AutoMapper;
+using ProjectManager.API.ActionFilters;
 using ProjectManager.Entities.DTO;
 
 namespace ProjectManager.API.Controllers
@@ -52,6 +52,7 @@ namespace ProjectManager.API.Controllers
 
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> CreateProject([FromBody] ProjectForManipulation project)
         {
             var result = _mapper.Map<Project>(project);
