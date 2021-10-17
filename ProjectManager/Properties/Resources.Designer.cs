@@ -106,6 +106,15 @@ namespace ProjectManager.UI.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Entered empty data.
+        /// </summary>
+        public static string EmptyData {
+            get {
+                return ResourceManager.GetString("EmptyData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Project name cannot be empty.
         /// </summary>
         public static string EmptyProjectName {

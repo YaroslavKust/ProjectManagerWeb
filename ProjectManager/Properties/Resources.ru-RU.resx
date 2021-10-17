@@ -132,6 +132,9 @@
   <data name="DifferentPasswords" xml:space="preserve">
     <value>Пароли не совпадают</value>
   </data>
+  <data name="EmptyData" xml:space="preserve">
+    <value>Введены пустые данные</value>
+  </data>
   <data name="EmptyProjectName" xml:space="preserve">
     <value>Имя проекта не может быть пустым!</value>
   </data>

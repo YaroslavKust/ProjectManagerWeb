@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System;
 using System.Windows;
 using System.Windows.Input;
 using Ninject;
@@ -32,9 +32,20 @@ namespace ProjectManager.UI.ViewModels
             {
                 return _registerCommand ?? (_registerCommand = new RelayCommand(async _ =>
                 {
+                    var dataIsEmpty =
+                        (String.IsNullOrWhiteSpace(RegName) ||
+                         String.IsNullOrWhiteSpace(RegPassword) ||
+                         String.IsNullOrWhiteSpace(ConfirmedPassword));
+
+                    if (dataIsEmpty)
+                    {
+                        _messenger.SendMessage(Properties.Resources.EmptyData);
+                        return;
+                    }
+
                     if (ConfirmedPassword != RegPassword)
                     {
-                        MessageBox.Show(Properties.Resources.DifferentPasswords);
+                        _messenger.SendMessage(Properties.Resources.DifferentPasswords);
                         return;
                     }
 
@@ -51,18 +62,21 @@ namespace ProjectManager.UI.ViewModels
                     }
 
                     Mouse.OverrideCursor = Cursors.Wait;
+
                     try
                     {
                         await _authService.RegisterAsync(RegName, RegPassword);
                         Mouse.OverrideCursor = Cursors.Arrow;
                     }
-                    catch(IOException)
+                    catch(Exception)
                     {
                         Mouse.OverrideCursor = Cursors.Arrow;
                         _messenger.SendMessage(Properties.Resources.NameAlreadyUsed);
                         return;
                     }
+
                     _messenger.SendMessage(Properties.Resources.SuccessRegistration);
+
                     var win = (MainWindow)Application.Current.MainWindow;
                     win.Frame.Navigate(new Authentication());
                 }));

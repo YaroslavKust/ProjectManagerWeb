@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -31,7 +32,14 @@ namespace ProjectManager.UI.Services
                 var jsonResult = await result.Content.ReadAsStringAsync();
                 App.Token = JObject.Parse(jsonResult)["token"].ToString();
             }
-            else throw new Exception();
+            else if (result.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                throw new UnauthorizedAccessException();
+            }
+            else
+            {
+                throw new Exception();
+            }
         }
 
 

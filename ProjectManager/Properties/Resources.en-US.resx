@@ -132,6 +132,9 @@
   <data name="DifferentPasswords" xml:space="preserve">
     <value>Password missmatch</value>
   </data>
+  <data name="EmptyData" xml:space="preserve">
+    <value>Entered empty data</value>
+  </data>
   <data name="EmptyProjectName" xml:space="preserve">
     <value>Project name cannot be empty</value>
   </data>

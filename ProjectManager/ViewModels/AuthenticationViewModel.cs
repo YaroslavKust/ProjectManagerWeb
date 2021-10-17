@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows;
 using Ninject;
 using ProjectManager.UI.Common;
@@ -30,26 +29,37 @@ namespace ProjectManager.UI.ViewModels
         {
             get
             {
-                return _authCommand ?? (_authCommand = new RelayCommand( _ =>
-                {
-                    try
-                    {
-                        Auth();
-                    }
-                    catch
-                    {
-                        _messenger.SendMessage(Properties.Resources.ErrorOfenter);
-                    }
-                }));
+                return _authCommand ?? (_authCommand = new RelayCommand( _ =>  Auth()));
             }
         }
 
         private async void Auth()
         {
-            await _authService.AuthorizeAsync(AuthName, AuthPassword);
+            try
+            {
+                var dataIsEmpty =
+                    (String.IsNullOrWhiteSpace(AuthName) || 
+                     String.IsNullOrWhiteSpace(AuthPassword));
 
-            var win = (MainWindow)Application.Current.MainWindow;
-            win.Frame.Navigate(new MainPage(new User()));
+                if (dataIsEmpty)
+                {
+                    _messenger.SendMessage(Properties.Resources.EmptyData);
+                    return;
+                }
+
+                await _authService.AuthorizeAsync(AuthName, AuthPassword);
+
+                var win = (MainWindow)Application.Current.MainWindow;
+                win.Frame.Navigate(new MainPage(new User()));
+            }
+            catch (UnauthorizedAccessException)
+            {
+                _messenger.SendMessage(Properties.Resources.InvalidLoginOrPassword);
+            }
+            catch (Exception)
+            {
+                _messenger.SendMessage(Properties.Resources.ErrorOfenter);
+            }
         }
     }
 }
